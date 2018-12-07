@@ -6,7 +6,7 @@ sys.path.insert(1, "./sympy")
 
 # load local
 from sympy import *
-from sympy.functions.elementary.trigonometric import TrigonometricFunction
+from sympy.functions.elementary.trigonometric import TrigonometricFunction, InverseTrigonometricFunction
 
 args = [
     (1*pi/2, 2),
@@ -154,6 +154,74 @@ args_inverse = [
 ]
 
 print('')
+print('========== sin(arg) ============ ')
+successCounter = 0
+totalCounter = 0
+t0 = time.time()
+for arg, bla in args:
+
+    q = Rational(arg/pi).q
+    if 0 != q % 2:
+        continue
+
+    #
+    result = sin(arg, evaluate=False)
+
+    # fix on inverse function of itself
+    if result.has(TrigonometricFunction, InverseTrigonometricFunction):
+        # fixes atan(tan(x)) etc
+        result = trigsimp(result, method='old')
+
+    # simplify
+    result = simplify(result)
+
+    # compare
+    if result.has(TrigonometricFunction, InverseTrigonometricFunction):
+        print('sin(%s) = %s still has TrigonometricFunction' %(arg, result))
+    else:
+        successCounter = successCounter + 1
+
+    totalCounter = totalCounter + 1
+
+t1 = time.time()
+print('success / total number of sin(arg) tests: %s/%s' %(successCounter, totalCounter))
+print('========== END sin(arg). Duration = %s s ============ ' %(t1-t0))
+
+print('')
+print('========== cos(arg) ============ ')
+successCounter = 0
+totalCounter = 0
+t0 = time.time()
+for arg, bla in args:
+
+    q = Rational(arg/pi).q
+    if 0 != q % 2:
+        continue
+
+    #
+    result = cos(arg, evaluate=False)
+
+    # fix on inverse function of itself
+    if result.has(TrigonometricFunction, InverseTrigonometricFunction):
+        # fixes atan(tan(x)) etc
+        result = trigsimp(result, method='old')
+
+    # simplify
+    result = simplify(result)
+
+    # compare
+    if result.has(TrigonometricFunction, InverseTrigonometricFunction):
+        print('cos(%s) = %s still has TrigonometricFunction' %(arg, result))
+    else:
+        successCounter = successCounter + 1
+
+    totalCounter = totalCounter + 1
+
+t1 = time.time()
+print('success / total number of cos(arg) tests: %s/%s' %(successCounter, totalCounter))
+print('========== END cos(arg). Duration = %s s ============ ' %(t1-t0))
+
+print('')
 print('========== acos(cos(arg)) ============ ')
 successCounter = 0
 totalCounter = 0
@@ -162,7 +230,7 @@ for arg, bla in args:
     result = acos(cos(arg, evaluate=False), evaluate=False)
 
     # fix on inverse function of itself
-    if result.has(TrigonometricFunction):
+    if result.has(TrigonometricFunction, InverseTrigonometricFunction):
         # fixes atan(tan(x)) etc
         result = trigsimp(result, method='old')
 
@@ -197,7 +265,7 @@ for arg, bla in args:
     result = asin(sin(arg, evaluate=False), evaluate=False)
 
     # fix on inverse function of itself
-    if result.has(TrigonometricFunction):
+    if result.has(TrigonometricFunction, InverseTrigonometricFunction):
         # fixes atan(tan(x)) etc
         result = trigsimp(result, method='old')
 
@@ -243,7 +311,7 @@ for arg, bla in args:
     result = atan(tan(arg, evaluate=False), evaluate=False)
 
     # fix on inverse function of itself
-    if result.has(TrigonometricFunction):
+    if result.has(TrigonometricFunction, InverseTrigonometricFunction):
         # fixes atan(tan(x)) etc
         result = trigsimp(result, method='old')
 
@@ -277,7 +345,7 @@ for arg, bla in args:
     result = asin(cos(arg, evaluate=False), evaluate=False)
 
     # fix on inverse function of itself
-    if result.has(TrigonometricFunction):
+    if result.has(TrigonometricFunction, InverseTrigonometricFunction):
         # fixes atan(tan(x)) etc
         result = trigsimp(result, method='old')
 
@@ -308,7 +376,7 @@ for arg, bla in args:
     result = acos(sin(arg, evaluate=False), evaluate=False)
 
     # fix on inverse function of itself
-    if result.has(TrigonometricFunction):
+    if result.has(TrigonometricFunction, InverseTrigonometricFunction):
         # fixes atan(tan(x)) etc
         result = trigsimp(result, method='old')
 
@@ -348,7 +416,7 @@ for sign in signs:
         result = tan(asin(arg, evaluate=False), evaluate=False)
 
         # fix on inverse function of itself
-        if result.has(TrigonometricFunction):
+        if result.has(TrigonometricFunction, InverseTrigonometricFunction):
             # fixes atan(tan(x)) etc
             result = trigsimp(result, method='old')
 
@@ -389,7 +457,7 @@ for sign in signs:
         result = sin(acos(arg, evaluate=False), evaluate=False)
 
         # fix on inverse function of itself
-        if result.has(TrigonometricFunction):
+        if result.has(TrigonometricFunction, InverseTrigonometricFunction):
             # fixes atan(tan(x)) etc
             result = trigsimp(result, method='old')
 
@@ -430,7 +498,7 @@ for sign in signs:
         result = cos(asin(arg, evaluate=False), evaluate=False)
 
         # fix on inverse function of itself
-        if result.has(TrigonometricFunction):
+        if result.has(TrigonometricFunction, InverseTrigonometricFunction):
             # fixes atan(tan(x)) etc
             result = trigsimp(result, method='old')
 
@@ -467,7 +535,7 @@ for sign in signs:
         result = sin(atan(arg, evaluate=False), evaluate=False)
 
         # fix on inverse function of itself
-        if result.has(TrigonometricFunction):
+        if result.has(TrigonometricFunction, InverseTrigonometricFunction):
             # fixes atan(tan(x)) etc
             result = trigsimp(result, method='old')
 
@@ -505,7 +573,7 @@ for sign in signs:
         result = cos(atan(arg, evaluate=False), evaluate=False)
 
         # fix on inverse function of itself
-        if result.has(TrigonometricFunction):
+        if result.has(TrigonometricFunction, InverseTrigonometricFunction):
             # fixes atan(tan(x)) etc
             result = trigsimp(result, method='old')
 
